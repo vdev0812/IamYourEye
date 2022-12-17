@@ -32,7 +32,7 @@ public class GameOverActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         int p = getIntent().getExtras().getInt("points");
 
-        tv_point.setText("Point "+p+"/24");
+        tv_point.setText("Test result: "+p+"/24 Point");
 
         addExplain();
 
