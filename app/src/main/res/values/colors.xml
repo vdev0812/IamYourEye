@@ -13,4 +13,5 @@
     <color name="sky_blue">#F5FDFF</color>
     <color name="light_white">#F5F5F5</color>
     <color name="main_color">#FF9B36</color>
+    <color name="grey_50">#80D9D9D9</color>
 </resources>
