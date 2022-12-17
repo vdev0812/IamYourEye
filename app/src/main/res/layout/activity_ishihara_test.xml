@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".IshiharaTestActivity">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/main_color">
+      <LinearLayout
+          android:id="@+id/btn_back"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:padding="12dp"
+          android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ishihara Test"
+            android:tag="title_create_qr"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="8dp"/>
+      </LinearLayout>
+  </LinearLayout>
+
+  <RelativeLayout
+      android:id="@+id/relativeLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="16dp">
+
+    <TextView
+        android:id="@+id/tv_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Question 1/24"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+  </RelativeLayout>
+
+  <TextView
+      android:id="@+id/tv_manual"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="16dp"
+      android:text="@string/text"
+      android:textAlignment="center"
+      android:textColor="@color/black"
+      android:textSize="14sp"/>
+
+  <ImageView
+      android:id="@+id/imv_ishihara"
+      android:layout_width="320dp"
+      android:layout_height="320dp"
+      android:layout_gravity="center"
+      android:layout_marginTop="32dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="16dp"
+      android:src="@drawable/ishihara_1"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Your answer is ?"
+      android:textColor="@color/black"
+      android:textSize="16sp"
+      android:textStyle="bold"
+      android:layout_marginTop="16dp"
+      android:layout_marginLeft="16dp"/>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_button_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/btn_answer_1"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="32dp"
+          android:layout_marginEnd="16dp"
+          android:layout_marginTop="12dp"
+          android:layout_marginBottom="12dp"
+          android:padding="4dp"
+          android:background="@drawable/background_button"
+          android:onClick="select"
+          android:singleLine="false"
+          android:text="button 1"
+          android:textAllCaps="false"
+          android:textColor="@color/white"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@+id/btn_answer_2"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/btn_answer_2"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="32dp"
+          android:layout_marginTop="12dp"
+          android:layout_marginBottom="12dp"
+          android:background="@drawable/background_button"
+          android:onClick="select"
+          android:text="button 2"
+          android:padding="4dp"
+          android:textAllCaps="false"
+          android:textColor="@color/white"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@+id/btn_answer_1"
+          app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_button_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/btn_answer_3"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="32dp"
+          android:layout_marginEnd="16dp"
+          android:layout_marginTop="12dp"
+          android:layout_marginBottom="12dp"
+          android:padding="4dp"
+          android:background="@drawable/background_button"
+          android:onClick="select"
+          android:singleLine="false"
+          android:text="button 1"
+          android:textAllCaps="false"
+          android:textColor="@color/white"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@+id/btn_answer_4"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/btn_answer_4"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="32dp"
+          android:layout_marginTop="12dp"
+          android:layout_marginBottom="12dp"
+          android:background="@drawable/background_button"
+          android:onClick="select"
+          android:text="button 2"
+          android:padding="4dp"
+          android:textAllCaps="false"
+          android:textColor="@color/white"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@+id/btn_answer_3"
+          app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </LinearLayout>
+  <TextView
+      android:id="@+id/tv_result"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="All people should see the number 12, including those with total color blindness. If someone said they can't see something or saw something else - they are fibbing."
+      android:textColor="@color/black"
+      android:textSize="14sp"
+      android:visibility="gone"
+      android:layout_marginTop="16dp"
+      android:layout_marginRight="16dp"
+      android:layout_marginLeft="32dp"
+      android:layout_marginBottom="16dp"/>
+
+  <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/btn_next"
+      android:visibility="gone"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@drawable/background_button"
+      android:layout_margin="16dp"
+      android:layout_gravity="bottom"
+      android:text="Next"
+      android:textColor="@color/white"
+      android:textAllCaps="false"
+      android:textSize="16sp"
+      android:onClick="next"/>
+
+
+  </LinearLayout>

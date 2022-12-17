@@ -14,4 +14,9 @@
         <item name="android:lineHeight" tools:targetApi="p">16dp</item>
     </style>
 
+    <style name="AppTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+    </style>
+
 </resources>
