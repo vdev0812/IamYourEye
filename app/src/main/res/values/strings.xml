@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">I\'m Your Eyes</string>
+    <string name="text">Below each Ishihara plate you will see buttons with option. Choose the one that best suits what you see after you have observed the image. Som may be ambiguous, so choose instinctively without thinking to much</string>
 </resources>
