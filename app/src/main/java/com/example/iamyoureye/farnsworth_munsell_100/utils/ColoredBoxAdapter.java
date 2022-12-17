@@ -23,7 +23,7 @@ public class ColoredBoxAdapter extends RecyclerView.Adapter<ColoredBoxAdapter.Co
     implements ColoredBoxTouchListener {
   
   // Locked Colored Boxes to not allow to move because it's the keys
-  private final List<Integer> boxKeyPositions = Arrays.asList(0, 9, 10, 19, 20, 29, 30, 39, 40, 49);
+  private final List<Integer> boxKeyPositions = Arrays.asList(0, 21, 22, 43, 44, 65, 66, 87, 88, 109);
   private final List<ColoredBox> boxes;
   private final ColoredBoxDragListener listener;
   private boolean textShow = false;
@@ -38,6 +38,7 @@ public class ColoredBoxAdapter extends RecyclerView.Adapter<ColoredBoxAdapter.Co
   public ColoredBoxHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.item_coloredbox, parent, false);
+
     return new ColoredBoxHolder(view);
   }
   

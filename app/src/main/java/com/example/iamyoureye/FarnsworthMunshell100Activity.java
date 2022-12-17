@@ -47,7 +47,7 @@ public class FarnsworthMunshell100Activity extends AppCompatActivity {
         RecyclerView mRecyclerView = findViewById(R.id.test_recycler);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mColoredBoxAdapter);
-        GridLayoutManager manager = new GridLayoutManager(this, 10);
+        GridLayoutManager manager = new GridLayoutManager(this, 22);
         mRecyclerView.setLayoutManager(manager);
 
         // Initialize adapter with item touch listener
