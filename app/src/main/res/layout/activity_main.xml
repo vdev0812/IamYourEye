@@ -11,6 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottomNavigation" />
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/bottomNavigation"
+        android:background="?android:attr/listDivider" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
@@ -21,6 +27,13 @@
         app:itemTextColor="@color/custom_color_bototm_navigation"
         android:layout_alignParentBottom="true"
         app:menu="@menu/menu_bottom_navigation"
-        app:labelVisibilityMode="labeled"/>
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        app:itemBackground="@drawable/nav_item_background_checked"
+        app:itemTextAppearanceInactive="@style/BottomNavigationText"
+        app:itemTextAppearanceActive="@style/BottomNavigationText.Selected"
+        tools:ignore="MissingConstraints"
+        app:labelVisibilityMode="labeled">
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </RelativeLayout>
