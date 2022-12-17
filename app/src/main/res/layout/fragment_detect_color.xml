@@ -11,7 +11,7 @@
         android:id="@+id/layout_permission"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="gone">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +36,8 @@
         android:id="@+id/layout_camera"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
+
         <androidx.camera.view.PreviewView
             android:id="@+id/camera_preview"
             android:layout_width="match_parent"
@@ -99,10 +100,22 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_close_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="10dp"
+            android:background="@drawable/cus_background_orange_10"
+            android:visibility="gone"/>
+
         <View
             android:id="@+id/pointer"
-            android:layout_width="@dimen/_10sdp"
-            android:layout_height="@dimen/_10sdp"
+            android:layout_width="@dimen/_5sdp"
+            android:layout_height="@dimen/_5sdp"
             android:background="@drawable/pointer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -146,19 +159,19 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_gallery"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_pick_color"
+                app:layout_constraintEnd_toStartOf="@+id/btn_speak_color"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.507" />
 
             <ImageView
-                android:id="@+id/btn_pick_color"
+                android:id="@+id/btn_speak_color"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_camera"
+                android:src="@drawable/ic_sound"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_change_camera"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -177,7 +190,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/btn_pick_color"
+                app:layout_constraintStart_toEndOf="@+id/btn_speak_color"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,7 +33,7 @@ public class ColorNameUtils {
         colorList.add(new ColorName("Dark Green", 0x00, 0x64, 0x00));
         colorList.add(new ColorName("Dark Khaki", 0xBD, 0xB7, 0x6B));
         colorList.add(new ColorName("Dark Magenta", 0x8B, 0x00, 0x8B));
-        colorList.add(new ColorName("Dark OliveGreen", 0x55, 0x6B, 0x2F));
+        colorList.add(new ColorName("Dark Olive Green", 0x55, 0x6B, 0x2F));
         colorList.add(new ColorName("Dark Orange", 0xFF, 0x8C, 0x00));
         colorList.add(new ColorName("Dark Orchid", 0x99, 0x32, 0xCC));
         colorList.add(new ColorName("Dark Red", 0x8B, 0x00, 0x00));

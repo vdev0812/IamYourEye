@@ -1,6 +1,5 @@
 package com.example.iamyoureye;
 
-import static android.hardware.camera2.CameraMetadata.LENS_FACING_BACK;
 import static com.example.iamyoureye.ColorNameUtils.getColorNameFromRgb;
 
 import android.Manifest;
@@ -10,12 +9,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -33,8 +33,6 @@ import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
-import androidx.camera.core.VideoCapture;
-import androidx.camera.core.impl.ImageAnalysisConfig;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.cardview.widget.CardView;
@@ -47,45 +45,54 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.card.MaterialCardView;
 import com.google.common.util.concurrent.ListenableFuture;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.Objects;
-import java.util.concurrent.CancellationException;
+import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import kotlin.jvm.internal.Intrinsics;
 import kotlin.jvm.internal.Ref;
-import kotlinx.coroutines.CoroutineScope;
-import kotlinx.coroutines.Dispatchers;
-import kotlinx.coroutines.Job;
 
 public class DetectColorFragment extends Fragment implements ImageAnalysis.Analyzer{
 
-    Button btnPermission;
-    RelativeLayout layoutPermission;
-    ConstraintLayout layoutCamera;
-    PreviewView cameraPreview;
-    ListenableFuture<ProcessCameraProvider> provider;
-    ProcessCameraProvider cameraProvider = null;
-    View pointer;
-    MaterialCardView containerColor;
-    UserColor currentColor;
-    ColorDetectHandler detectHandler;
-    CardView color;
-    TextView nameColor;
-    ImageView btnChangeCamera;
-    ImageView btnPickImage;
-    ImageView viewImage;
-    Guideline left;
-    Guideline right;
+    private Button btnPermission;
+    private RelativeLayout layoutPermission;
+    private ConstraintLayout layoutCamera;
+    private PreviewView cameraPreview;
+    private ListenableFuture<ProcessCameraProvider> provider;
+    private ProcessCameraProvider cameraProvider = null;
+    private View pointer;
+    private MaterialCardView containerColor;
+    private UserColor currentColor;
+    private ColorDetectHandler detectHandler;
+    private CardView color;
+    private TextView nameColor;
+    private ImageView btnChangeCamera;
+    private ImageView btnPickImage;
+    private ImageView btnClose;
+    private ImageView viewImage;
+    private Guideline left;
+    private Guideline right;
     private ImageCapture imageCapture;
     private ExecutorService cameraExecutor;
-    int cameraDefault = CameraSelector.LENS_FACING_BACK;
-    long timeOld = 0l;
-    long timeOldCam = 0l;
-    boolean camera = true;
+    private ConstraintLayout containerActionButton;
+    private int cameraDefault = CameraSelector.LENS_FACING_BACK;
+    private long timeOld = 0l;
+    private long timeOldCam = 0l;
+    private boolean camera = true;
+    private Bitmap img;
+    private float dX, dY, cX, cY;
+    private int lastAction;
+    private int pixel;
+    private int r;
+    private int g;
+    private int b;
+    private ImageView btnSpeak;
+    TextToSpeech textToSpeech;
+    String hex;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -94,13 +101,54 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
         provider = ProcessCameraProvider.getInstance(requireActivity());
         actionPermission();
         changeCamera();
+        getImage();
+        close();
+        speakColor();
+        return view;
+    }
+
+    private void speakColor() {
+        btnSpeak.setOnClickListener(view1 -> {
+            textToSpeech = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+                @Override
+                public void onInit(int i) {
+                    speak();
+                }
+            });
+        });
+    }
+
+    private void close() {
+        btnClose.setOnClickListener(view1 -> {
+            camera = true;
+            btnChangeCamera.setEnabled(true);
+            btnClose.setVisibility(View.GONE);
+            viewImage.setImageBitmap(null);
+            viewImage.setBackgroundColor(Color.TRANSPARENT);
+            viewImage.setOnTouchListener(null);
+            pointer.setX(cameraPreview.getWidth()/2);
+            pointer.setY(cameraPreview.getHeight()/2);
+            containerColor.setX(pointer.getX() - 150);
+            containerColor.setY(pointer.getY() - 300);
+            onResume();
+        });
+    }
+
+    private void getImage() {
         btnPickImage.setOnClickListener(view1 -> {
             Intent gallery = new Intent(Intent.ACTION_PICK);
             gallery.setType("image/*");
             startActivityForResult(gallery, 102);
             btnPickImage.setEnabled(false);
         });
-        return view;
+    }
+
+
+    private void speak() {
+        String toSpeak = nameColor.getText().toString();
+        textToSpeech.setLanguage(Locale.ENGLISH);
+        String utteranceId = UUID.randomUUID().toString();
+        textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 
     private void changeCamera() {
@@ -194,10 +242,10 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
             }
         }, ContextCompat.getMainExecutor(requireContext()));
     }
+
     @Override
     public void analyze(@NonNull ImageProxy image) {
         // image processing here for the current frame
-        Log.d("TAG", "analyze: got the frame at: " + image.getImageInfo().getTimestamp());
         long timeCurent = System.currentTimeMillis();
         detectHandler = new ColorDetectHandler();
         if(timeCurent - timeOld >= TimeUnit.MILLISECONDS.toMillis(800)) {
@@ -213,6 +261,7 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
         cameraExecutor = Executors.newSingleThreadExecutor();
         btnPermission = view.findViewById(R.id.btn_permission);
         layoutCamera = view.findViewById(R.id.layout_camera);
+        btnClose = view.findViewById(R.id.btn_close);
         layoutPermission = view.findViewById(R.id.layout_permission);
         cameraPreview = view.findViewById(R.id.camera_preview);
         pointer = view.findViewById(R.id.pointer);
@@ -224,6 +273,8 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
         left = view.findViewById(R.id.guideline_left);
         right = view.findViewById(R.id.guideline_right);
         containerColor = view.findViewById(R.id.card_color_preview);
+        containerActionButton = view.findViewById(R.id.container_button_action);
+        btnSpeak = view.findViewById(R.id.btn_speak_color);
     }
 
     @Override
@@ -287,9 +338,7 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-    Bitmap img;
-    float dX, dY, cX, cY;
-    int lastAction;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -298,33 +347,43 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
             camera = false;
             btnPickImage.setEnabled(true);
             btnChangeCamera.setEnabled(false);
+            btnClose.setVisibility(View.VISIBLE);
             Uri uri = data.getData();
             viewImage.setImageURI(uri);
+            viewImage.setBackgroundColor(Color.BLACK);
             viewImage.setDrawingCacheEnabled(true);
             viewImage.buildDrawingCache(true);
+            img = viewImage.getDrawingCache();
+            pixel = img.getPixel((int) pointer.getX(), (int) pointer.getY());
+            //getting RGB values
+            r = Color.red(pixel);
+            g = Color.green(pixel);
+            b = Color.blue(pixel);
 
-//            int pixel1 = img.getPixel((int) pointer.getX(), (int) pointer.getY());
-//            //getting RGB values
-//            int r1 = Color.red(pixel1);
-//            int g1 = Color.green(pixel1);
-//            int b1 = Color.blue(pixel1);
-//
-//            String hex1 = "#" + Integer.toHexString(pixel1);
-//            color.setBackgroundColor(Color.parseColor(hex1));
-//            nameColor.setText(getColorNameFromRgb(r1, g1, b1));
-            viewImage.setOnTouchListener((view, event) -> {
-                img = viewImage.getDrawingCache();
-                int pixel = img.getPixel((int) event.getX(), (int) event.getY());
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        dX = pointer.getX() - event.getRawX();
-                        dY = pointer.getY() - event.getRawY();
-                        cX = containerColor.getX() - event.getRawX();
-                        cY = containerColor.getY() - event.getRawY();
-                        lastAction = MotionEvent.ACTION_DOWN;
-                        break;
-                    case MotionEvent.ACTION_MOVE:
+            hex = "#" + Integer.toHexString(pixel);
+            color.setCardBackgroundColor(Color.parseColor(hex));
+            nameColor.setText(getColorNameFromRgb(r, g, b));
+            onTounch(img);
+        }
+    }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private void onTounch(Bitmap image) {
+        viewImage.setOnTouchListener((view, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastAction = MotionEvent.ACTION_DOWN;
+                    pointer.setX(event.getX());
+                    pointer.setY(event.getY());
+                    containerColor.setX(event.getX()-150);
+                    containerColor.setY(event.getY()-300);
+                    dX = pointer.getX() - event.getRawX();
+                    dY = pointer.getY() - event.getRawY();
+                    cX = containerColor.getX() - event.getRawX();
+                    cY = containerColor.getY() - event.getRawY();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if(event.getY() <= image.getHeight()) {
                         pointer.animate()
                                 .x(event.getRawX() + dX)
                                 .y(event.getRawY() + dY)
@@ -336,22 +395,25 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
                                 .setDuration(0)
                                 .start();
                         lastAction = MotionEvent.ACTION_MOVE;
+                    }
+                    break;
+                default:
+                    return false;
+            }
 
-                        //getting RGB values
-                        int r = Color.red(pixel);
-                        int g = Color.green(pixel);
-                        int b = Color.blue(pixel);
+            if(event.getY() <= image.getHeight()) {
+                pixel = image.getPixel((int) event.getX(), (int) event.getY());
 
-                        String hex = "#" + Integer.toHexString(pixel);
-                        color.setBackgroundColor(Color.parseColor(hex));
-                        nameColor.setText(getColorNameFromRgb(r, g, b));
-                        break;
-                    default:
-                        return false;
-                }
-                return true;
-            });
-        }
+                //getting RGB values
+                r = Color.red(pixel);
+                g = Color.green(pixel);
+                b = Color.blue(pixel);
+
+                hex = "#" + Integer.toHexString(pixel);
+                color.setCardBackgroundColor(Color.parseColor(hex));
+                nameColor.setText(getColorNameFromRgb(r, g, b));
+            }
+            return true;
+        });
     }
-
 }
