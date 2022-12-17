@@ -30,6 +30,14 @@ public class EyeTestFragment extends Fragment {
             }
         });
 
+        btn_farnsworth_munsell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FarnsworthMunshell100Activity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 }

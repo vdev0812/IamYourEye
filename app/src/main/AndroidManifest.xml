@@ -14,6 +14,11 @@
         android:theme="@style/Theme.IamYourEye"
         tools:targetApi="31">
         <activity
+            android:name=".FarnsworthMunshell100Activity"
+            android:label="@string/test_label"
+            android:screenOrientation="landscape"
+            android:exported="false" />
+        <activity
             android:name=".GameOverActivity"
             android:exported="false" />
         <activity
