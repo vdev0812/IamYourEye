@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_test_eyes"
+        android:title="Eye tests"
+        android:icon="@drawable/ic_eyes"/>
+
+    <item
+        android:id="@+id/action_detect_color"
+        android:title="Detect Color"
+        android:icon="@drawable/ic_camera"/>
+</menu>
