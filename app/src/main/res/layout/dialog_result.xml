@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/background_dialog_corner">
+
+    <ImageView
+        android:id="@+id/imv_ishihara"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:src="@drawable/ishihara_1"/>
+
+    <TextView
+        android:id="@+id/tv_explain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="All people should see the number 12, including those with total color blindness. If someone said they can't see something or saw something else - they are fibbing."
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_button"
+        android:text="Ok"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/white"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"/>
+
+</LinearLayout>
