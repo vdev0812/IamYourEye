@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 public class EyeTestFragment extends Fragment {
 
-    AppCompatButton btn_ishihara, btn_cambridge, btn_farnsworth_munsell;
+    AppCompatButton btn_ishihara, btn_farnsworth_munsell;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -19,7 +19,6 @@ public class EyeTestFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_eye_test, container, false);
 
         btn_ishihara = view.findViewById(R.id.btn_ishihara);
-        btn_cambridge = view.findViewById(R.id.btn_cambridge);
         btn_farnsworth_munsell = view.findViewById(R.id.btn_farnsworth_munsell);
 
         btn_ishihara.setOnClickListener(new View.OnClickListener() {

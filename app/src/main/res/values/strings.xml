@@ -14,4 +14,6 @@
     <string name="test_result">Test Result</string>
     <string name="close">Close</string>
     <string name="result_details">Total error score based on Farnsworth Munsell formula is %1$d</string>
+    <string name="intro_ishihara">The test consists of 24 (short version) plates designed to provide a test that gives a quick and accurate assessment of color vision deficiency of congenital origin. The test is designed to detect the two most common types of color blindness: Protanopia, total or partial red blindness, and Deuteranopia, the absolute or partial deficiency to perceive green.</string>
+    <string name="intro_farnsworth">The Farnsworth-Munsell 100 hue test is one of the most famous color vision tests available. It belongs to the group of hue discrimination, also called arrangement tests. The aim of the test is to order the shown color plates in the correct order—any misplacement can point to some sort of color vision deficiency.</string>
 </resources>
