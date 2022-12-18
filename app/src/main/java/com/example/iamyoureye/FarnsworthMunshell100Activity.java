@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.iamyoureye.farnsworth_munsell_100.data.ColoredBoxData;
@@ -24,8 +25,7 @@ public class FarnsworthMunshell100Activity extends AppCompatActivity {
 
     private static final int[] ACTION_MENUS = {
             R.string.label_menu_check,
-            R.string.label_menu_test_again,
-            R.string.label_menu_about
+            R.string.label_menu_test_again
     };
 
     private boolean isDraggable = true;
@@ -34,10 +34,20 @@ public class FarnsworthMunshell100Activity extends AppCompatActivity {
     private List<ColoredBox> mColoredBoxes;
     private ColoredBoxAdapter mColoredBoxAdapter;
     private ItemTouchHelper mItemTouchHelper;
+    LinearLayout btn_check, btn_back, btn_more;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_farnsworth_munshell100);
+
+        btn_check = findViewById(R.id.btn_check);
+        btn_back = findViewById(R.id.btn_back);
+        btn_more = findViewById(R.id.btn_more);
+
+        btn_check.setOnClickListener(v -> onCheckResult());
+        btn_more.setOnClickListener(v -> onTestAgain());
+        btn_back.setOnClickListener(v -> finish());
+
         // Initialize adapter
         mColoredBoxes = new ArrayList<>();
         mColoredBoxAdapter = new ColoredBoxAdapter(mColoredBoxes, this::onColoredBoxStartDrag);
@@ -63,15 +73,6 @@ public class FarnsworthMunshell100Activity extends AppCompatActivity {
             );
         }
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Add action to menu | NOTE: better compare with item label
-        if (item.getItemId() == 0) onCheckResult();
-        else if (item.getItemId() == 1) onTestAgain();
-        else if (item.getItemId() == 2) onAbout();
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -159,14 +160,5 @@ public class FarnsworthMunshell100Activity extends AppCompatActivity {
         isDraggable = true;
         mColoredBoxAdapter.showValue(false);
         populateColoredBoxData();
-    }
-
-    // Show about app
-    private void onAbout() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.label_menu_about)
-                .setMessage(R.string.about_details)
-                .setPositiveButton(R.string.ok, null)
-                .create().show();
     }
 }
