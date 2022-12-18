@@ -6,10 +6,6 @@
     <shape xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/listview_background_shape">
         <corners android:radius="8dp" />
-        <gradient
-            android:startColor="#FFFEAA3A"
-            android:endColor="#FFFE892B"
-            android:type="linear"
-            android:angle="-90"/>
+        <solid android:color="@color/white"/>
     </shape>
 </inset>
