@@ -14,6 +14,8 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
@@ -73,8 +75,6 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
     private ImageView btnPickImage;
     private ImageView btnClose;
     private ImageView viewImage;
-    private Guideline left;
-    private Guideline right;
     private ImageCapture imageCapture;
     private ExecutorService cameraExecutor;
     private ConstraintLayout containerActionButton;
@@ -84,7 +84,6 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
     private boolean camera = true;
     private Bitmap img;
     private float dX, dY, cX, cY;
-    private int lastAction;
     private int pixel;
     private int r;
     private int g;
@@ -92,7 +91,6 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
     private ImageView btnSpeak;
     TextToSpeech textToSpeech;
     String hex;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,16 +104,25 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
         speakColor();
         return view;
     }
-
+    Handler handlerUI = new Handler();
     private void speakColor() {
         btnSpeak.setOnClickListener(view1 -> {
             textToSpeech = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
                 @Override
                 public void onInit(int i) {
                     speak();
+                    btnSpeak.setClickable(false);
                 }
             });
+            handlerUI.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    btnSpeak.setClickable(true);
+                }
+            }, 1000);
+
         });
+
     }
 
     private void close() {
@@ -270,8 +277,6 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
         btnChangeCamera = view.findViewById(R.id.btn_change_camera);
         btnPickImage = view.findViewById(R.id.btn_pick_image);
         viewImage = view.findViewById(R.id.image_view);
-        left = view.findViewById(R.id.guideline_left);
-        right = view.findViewById(R.id.guideline_right);
         containerColor = view.findViewById(R.id.card_color_preview);
         containerActionButton = view.findViewById(R.id.container_button_action);
         btnSpeak = view.findViewById(R.id.btn_speak_color);
@@ -372,7 +377,6 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
         viewImage.setOnTouchListener((view, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    lastAction = MotionEvent.ACTION_DOWN;
                     pointer.setX(event.getX());
                     pointer.setY(event.getY());
                     containerColor.setX(event.getX()-150);
@@ -394,7 +398,6 @@ public class DetectColorFragment extends Fragment implements ImageAnalysis.Analy
                                 .y(event.getRawY() + cY)
                                 .setDuration(0)
                                 .start();
-                        lastAction = MotionEvent.ACTION_MOVE;
                     }
                     break;
                 default:
